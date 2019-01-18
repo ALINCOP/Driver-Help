@@ -1,8 +1,13 @@
+//version 18.01.2019 - 1
+
 package com.example.alin.driver_help;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
+import android.location.Location;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -91,9 +96,17 @@ public class MenuActivity extends AppCompatActivity {
         PoliceMap = (Button) findViewById(R.id.btn_radar);
 
         PoliceMap.setOnClickListener(new View.OnClickListener() {
+            GPStracker g = new GPStracker(getApplicationContext());
+
             @Override
             public void onClick(View v) {
+
+                Location l = g.getLocation();
+                if(l != null)
                 startActivity(new Intent(MenuActivity.this, MapsActivity.class));
+                else{
+                    Toast.makeText(getApplicationContext(),"Please enable your GPS",Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -112,13 +125,11 @@ public class MenuActivity extends AppCompatActivity {
         if (available == ConnectionResult.SUCCESS)
         {
             //evrything is ok
-            Log.d(TAG, "isServicesOK: Google play services is working");
             return true;
         }
         else if(GoogleApiAvailability.getInstance().isUserResolvableError(available))
         {
             //an error we can fix it
-            Log.d(TAG, "isServicesOK: error, but we can fix it");
             Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(MenuActivity.this, available, ERROR_DIALOG_REQUEST );
             dialog.show();
         }
