@@ -1,4 +1,4 @@
-//version 18.01.2019 - 1
+//version 18.01.2019 - 2
 
 package com.example.alin.driver_help;
 
@@ -23,6 +23,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -53,6 +54,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 return;
             }
             mMap.setMyLocationEnabled(true);
+            Marker m1 = googleMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(46.3, 23.7167))
+                    .anchor(0.5f, 0.5f)
+                    .title("Speed Camera Aiud")
+                    .snippet("Snippet1"));
         }else
             Toast.makeText(this, "YOU NEED TO ACTIVATE YOUR GPS",Toast.LENGTH_LONG).show();
     }
