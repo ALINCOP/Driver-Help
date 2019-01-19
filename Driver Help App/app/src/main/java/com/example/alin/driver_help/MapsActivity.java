@@ -27,8 +27,16 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -40,6 +48,21 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private boolean mLocationPermissionsGranted = false;
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
+    DatabaseReference databaseReference;
+    List<SpeedCameras> speedCamerasList;
+
+
+
+
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_maps);
+        getLocationPermission();
+        databaseReference = FirebaseDatabase.getInstance().getReference("SpeedCameras");
+        speedCamerasList = new ArrayList<>();
+    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -53,22 +76,35 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 return;
             }
+
             mMap.setMyLocationEnabled(true);
-            Marker m1 = googleMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(46.3, 23.7167))
-                    .anchor(0.5f, 0.5f)
-                    .title("Speed Camera Aiud")
-                    .snippet("Snippet1"));
+
+            Log.d(TAG,"!!!!! AICIIIII !!!!!!!!!!!!tttttttt");
+
+            databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    speedCamerasList.clear();
+                    for (DataSnapshot s : dataSnapshot.getChildren()) {
+                        SpeedCameras speedCameras = s.getValue(SpeedCameras.class);
+                        LatLng loc = new LatLng(speedCameras.s_lat, speedCameras.s_long);
+                        mMap.addMarker(new MarkerOptions().position(loc).title("Speed camera"));
+
+
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
         }else
             Toast.makeText(this, "YOU NEED TO ACTIVATE YOUR GPS",Toast.LENGTH_LONG).show();
     }
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
-        getLocationPermission();
-    }
 
     private void getDeviceLocation(){
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
