@@ -32,7 +32,7 @@ public class GPStracker implements LocationListener {
             return l;
         }
         else{
-            Toast.makeText(context,"Please enable your GPS",Toast.LENGTH_LONG).show();
+            Toast.makeText(context,"No GPS signal, please enable your GPS or wait for gps signal",Toast.LENGTH_LONG).show();
         }
         return  null;
     }

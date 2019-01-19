@@ -1,4 +1,4 @@
-//version 18.01.2019 - 1
+//version 19.01.2019 - 1
 
 package com.example.alin.driver_help;
 
@@ -19,6 +19,8 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -31,11 +33,16 @@ public class MenuActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthListener;
     private static final String TAG = "MenuActivity";
     private static final int ERROR_DIALOG_REQUEST = 9001;
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseSpeedCameras;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseSpeedCameras = firebaseDatabase.getReference("SpeedCameras");
 
         if(isServicesOK())
             init();
@@ -84,9 +91,22 @@ public class MenuActivity extends AppCompatActivity {
         ReportPolice = (Button) findViewById(R.id.btn_reportPolice);
 
         ReportPolice.setOnClickListener(new View.OnClickListener() {
+            GPStracker g = new GPStracker(getApplicationContext());
             @Override
             public void onClick(View v) {
-
+                Location l = g.getLocation();
+                if(l != null)
+                {
+                    double lati = l.getLatitude();
+                    double longi = l.getLongitude();
+                    //String id = databaseSpeedCameras.push().getKey();
+                    SpeedCameras speedCameras = new SpeedCameras(lati,longi);
+                    databaseSpeedCameras.push().setValue(speedCameras);
+                    Toast.makeText(getApplicationContext(), "Speed camera reported", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    return;
+                }
             }
         });
 
