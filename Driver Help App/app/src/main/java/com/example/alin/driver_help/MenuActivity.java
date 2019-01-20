@@ -41,6 +41,8 @@ public class MenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
+        ActivityCompat.requestPermissions(MenuActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.CAMERA},123);
+
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseSpeedCameras = firebaseDatabase.getReference("SpeedCameras");
 

@@ -44,7 +44,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static final String TAG = "MapsActivity";
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
-    private static final int LOCATION_PERMISSION_REQ_CODE = 1234;
+    private static final int LOCATION_PERMISSION_REQ_CODE = 123;
     private static final float DEFAULT_ZOOM = 15f;
     private boolean mLocationPermissionsGranted = false;
     private GoogleMap mMap;
@@ -104,7 +104,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         SpeedCameras speedCameras = s.getValue(SpeedCameras.class);
                         LatLng loc = new LatLng(speedCameras.s_lat, speedCameras.s_long);
                         mMap.addMarker(new MarkerOptions().position(loc).title("Speed camera"));
-                        Log.d(TAG, "!!!!!! marker adaugat !!!!");
+                        Log.d(TAG, "!!!!!! marker adaugat !!!! MARKERUL CU ID: "+s);
+                        try{
+                            sleep(500);//oprirea pt. 0,5 secunde a firului de executie
+                        }
+                        catch(InterruptedException e)
+                        {
+                            Log.d(TAG, "EROARE");}
 
 
                     }
