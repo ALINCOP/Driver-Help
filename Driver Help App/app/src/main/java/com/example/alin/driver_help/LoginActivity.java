@@ -29,7 +29,6 @@ public class LoginActivity extends AppCompatActivity {
    // public static final String Nume = "com.example.alin.driver_help.Nume";
     //public static final String id_user = "com.example.alin.driver_help.id_user";
     private SignInButton signIn;
-    private Button signOut;
     private int RC_SIGN_IN = 1;
     GoogleSignInClient mGoogleSignInClient;
     private String TAG = "activity_login";
@@ -44,7 +43,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         signIn = (SignInButton)findViewById(R.id.sign_in_button);
-        signOut = (Button)findViewById(R.id.sign_out);
         mAuth = FirebaseAuth.getInstance();
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -75,14 +73,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        signOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mGoogleSignInClient.signOut(); // deconectare
-                signOut.setVisibility(View.GONE);
-                signIn.setVisibility(View.VISIBLE);
-            }
-        });
     }
 
     @Override
@@ -142,7 +132,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private void updateUI(FirebaseUser user) {
 
-        signOut.setVisibility(View.VISIBLE);
         signIn.setVisibility(View.GONE);
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
         if (acct != null) {

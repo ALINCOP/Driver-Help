@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -15,11 +15,12 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="116dp"
-        android:layout_marginTop="207dp"
-        android:layout_marginEnd="118dp"
-        android:layout_marginBottom="220dp"
-        android:text="Go To Position" />
+        android:text="Go To Position"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_savePos" />
 
     <Button
         android:id="@+id/btn_savePos"
@@ -30,9 +31,10 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="116dp"
-        android:layout_marginTop="67dp"
-        android:layout_marginEnd="118dp"
-        android:layout_marginBottom="360dp"
-        android:text="Save Parking Position" />
-</RelativeLayout>
+        android:text="Save Parking Position"
+        app:layout_constraintBottom_toTopOf="@+id/btn_goToPos"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</android.support.constraint.ConstraintLayout>

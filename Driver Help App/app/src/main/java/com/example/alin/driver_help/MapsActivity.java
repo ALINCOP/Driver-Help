@@ -1,4 +1,4 @@
-//version 18.01.2019 - 2
+//version 20.01.2019 - 2
 
 package com.example.alin.driver_help;
 
@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -49,7 +50,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     DatabaseReference databaseReference;
-    List<SpeedCameras> speedCamerasList;
 
 
 
@@ -61,7 +61,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.activity_maps);
         getLocationPermission();
         databaseReference = FirebaseDatabase.getInstance().getReference("SpeedCameras");
-        speedCamerasList = new ArrayList<>();
+
     }
 
     @Override
@@ -81,14 +81,30 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             Log.d(TAG,"!!!!! AICIIIII !!!!!!!!!!!!tttttttt");
 
+                ThreadMarker thread = new ThreadMarker();
+                thread.start();
+
+
+
+        }else
+            Toast.makeText(this, "YOU NEED TO ACTIVATE YOUR GPS",Toast.LENGTH_LONG).show();
+    }
+
+
+    class ThreadMarker extends Thread{
+
+
+        @Override
+        public void run() {
+
             databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    speedCamerasList.clear();
                     for (DataSnapshot s : dataSnapshot.getChildren()) {
                         SpeedCameras speedCameras = s.getValue(SpeedCameras.class);
                         LatLng loc = new LatLng(speedCameras.s_lat, speedCameras.s_long);
                         mMap.addMarker(new MarkerOptions().position(loc).title("Speed camera"));
+                        Log.d(TAG, "!!!!!! marker adaugat !!!!");
 
 
                     }
@@ -101,10 +117,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
             });
 
-        }else
-            Toast.makeText(this, "YOU NEED TO ACTIVATE YOUR GPS",Toast.LENGTH_LONG).show();
+        }
     }
-
 
     private void getDeviceLocation(){
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);

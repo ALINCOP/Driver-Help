@@ -28,12 +28,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MenuActivity" />
+        <activity android:name=".MenuActivity"
+            android:label="Driver Help - Menu"/>
         <activity
             android:name=".CameraActivity"
+            android:label="Driver Help - Camera"
             android:parentActivityName=".MenuActivity" />
         <activity
             android:name=".ParkingActivity"
+            android:label="Driver Help - Parking"
             android:parentActivityName=".MenuActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -53,7 +56,8 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="Driver Help - Police Map"></activity>
+            android:label="Driver Help - Police Map"
+            android:parentActivityName=".MenuActivity"/>
     </application>
 
 </manifest>
